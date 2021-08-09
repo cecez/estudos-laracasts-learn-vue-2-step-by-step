@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+
+<div id="root" class="container">
+    <modal
+        @close="showModal = false"
+        v-if="showModal"
+    >
+        Aqui vai o conteúdo do modal.
+    </modal>
+
+    <button @click="showModal = true">Mostrar modal</button>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>body { padding-top: 40px; }</style>
+    <title></title>
+</head>
+<body>
+
+<div id="root" class="container">
+    <progress-view inline-template>
+        <div>
+            <h1>Seu progresso no curso é de {{ completionRate }}%.</h1>
+            <p>
+                <button @click="completionRate += 10;">Vídeo concluído</button>
+            </p>
+        </div>
+
+    </progress-view>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
+

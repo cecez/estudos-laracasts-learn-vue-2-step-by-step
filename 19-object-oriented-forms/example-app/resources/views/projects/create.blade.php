@@ -8,6 +8,8 @@
     @include('projects.list')
 
     <div id="app">
+        <example></example>
+
         <form action="/projects" method="POST" @submit.prevent="onSubmit" @keydown="form.errors.clear($event.target.name)">
             @csrf
 
@@ -24,11 +26,8 @@
         </form>
     </div>
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/app.js"></script>
+    <script src="/js/vendor.js"></script>
 
 </body>
 </html>

@@ -1,35 +1,4 @@
-class Errors {
-    constructor() {
-        this.errors = {};
-    }
-
-    any() {
-        return Object.keys(this.errors).length > 0;
-    }
-
-    clear(field) {
-        if (field) {
-            delete this.errors[field];
-            return;
-        }
-
-        this.errors = {};
-    }
-
-    get(field) {
-        if (this.errors[field]) {
-            return this.errors[field][0];
-        }
-    }
-
-    has(field) {
-        return this.errors.hasOwnProperty(field);
-    }
-
-    record(errors) {
-        this.errors = errors;
-    }
-}
+import Errors from "./Errors";
 
 class Form {
     constructor(data) {
@@ -88,22 +57,4 @@ class Form {
     }
 }
 
-new Vue({
-    el: '#app',
-
-    data: {
-        form: new Form({
-            name: '',
-            description: ''
-        })
-    },
-
-    methods: {
-        onSubmit() {
-            this.form
-                .submit('post', '/projects')
-                .then(data => console.log(data))
-                .catch(error => console.log(error));
-        }
-    }
-});
+export default Form;

@@ -10,6 +10,8 @@
     <div id="app">
         <example></example>
 
+        <notification></notification>
+
         <form action="/projects" method="POST" @submit.prevent="onSubmit" @keydown="form.errors.clear($event.target.name)">
             @csrf
 
@@ -27,7 +29,6 @@
     </div>
 
     <script src="/js/app.js"></script>
-    <script src="/js/vendor.js"></script>
 
 </body>
 </html>

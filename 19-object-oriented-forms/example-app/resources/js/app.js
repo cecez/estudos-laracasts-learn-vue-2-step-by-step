@@ -1,6 +1,7 @@
 import axios from "axios";
 import Example from './components/Example';
 import Form from "./core/Form";
+import Notification from "./components/Notification";
 import Vue from "vue";
 
 window.axios = axios;
@@ -10,7 +11,7 @@ new Vue({
     el: '#app',
 
     components: {
-        Example
+        Example, Notification
     },
 
     data: {

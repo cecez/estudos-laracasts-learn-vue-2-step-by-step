@@ -2072,6 +2072,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "About"
 });
@@ -2089,6 +2095,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2167,7 +2180,8 @@ var routes = [{
   component: _views_About__WEBPACK_IMPORTED_MODULE_0__["default"]
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
-  routes: routes
+  routes: routes,
+  linkActiveClass: 'is-active'
 }));
 
 /***/ }),
@@ -2546,10 +2560,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h1", [_vm._v("Página de about")]),
-      _vm._v(" "),
-      _c("p", [_vm._v("About a girl.")])
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading" }, [
+              _vm._v("Página sobre")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm._v("Sobre uma garota.")
+            ])
+          ])
+        ])
+      ])
     ])
   }
 ]
@@ -2582,7 +2606,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Home Page")])])
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading" }, [_vm._v("Home Page")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm._v("Corpo da home page")
+            ])
+          ])
+        ])
+      ])
+    ])
   }
 ]
 render._withStripped = true

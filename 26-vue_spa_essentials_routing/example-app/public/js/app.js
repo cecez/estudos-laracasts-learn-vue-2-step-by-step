@@ -2108,8 +2108,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Home"
+  data: function data() {
+    return {
+      seguidores: []
+    };
+  },
+  name: "Home",
+  created: function created() {
+    var _this = this;
+
+    // busca dados por requisição assíncrona
+    axios.get('https://api.github.com/users/cecez/followers').then(function (_ref) {
+      var data = _ref.data;
+      return _this.seguidores = data;
+    }); // equivale a .then((response => this.seguidores = response.data)
+  }
 });
 
 /***/ }),
@@ -2599,28 +2618,39 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
-          _c("div", { staticClass: "panel panel-default" }, [
-            _c("div", { staticClass: "panel-heading" }, [_vm._v("Home Page")]),
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "columns" }, [
+      _c(
+        "div",
+        { staticClass: "column" },
+        _vm._l(_vm.seguidores, function(seguidor) {
+          return _c("div", { staticClass: "message" }, [
+            _c("div", { staticClass: "message-header" }, [
+              _c("p", [
+                _c("img", {
+                  staticStyle: { width: "150px" },
+                  attrs: { src: seguidor.avatar_url, alt: seguidor.login }
+                })
+              ]),
+              _vm._v(" "),
+              _c("p", [_vm._v("Seguidor: " + _vm._s(seguidor.login))])
+            ]),
             _vm._v(" "),
-            _c("div", { staticClass: "panel-body" }, [
-              _vm._v("Corpo da home page")
+            _c("div", { staticClass: "message-body" }, [
+              _c(
+                "a",
+                { attrs: { href: seguidor.html_url, target: "_blank" } },
+                [_vm._v(_vm._s(seguidor.html_url))]
+              )
             ])
           ])
-        ])
-      ])
+        }),
+        0
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

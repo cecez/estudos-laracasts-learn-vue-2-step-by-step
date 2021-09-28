@@ -2,14 +2,12 @@
     <div class="container">
         <div class="columns">
             <div class="column">
-                <div class="message" v-for="seguidor in seguidores">
+                <div class="message" v-for="status in statuses">
                     <div class="message-header">
-                        <p><img :src="seguidor.avatar_url" :alt="seguidor.login" style="width: 150px"></p>
-                        <p>Seguidor: {{ seguidor.login }}</p>
+                        <p>{{ status.user.name }} disse ...</p>
+                        <p>{{ postedOn(status) }}</p>
                     </div>
-                    <div class="message-body">
-                        <a :href="seguidor.html_url" target="_blank">{{ seguidor.html_url }}</a>
-                    </div>
+                    <div class="message-body" v-text="status.body"></div>
                 </div>
             </div>
         </div>
@@ -17,19 +15,27 @@
 </template>
 
 <script>
+import moment from 'moment';
+import Status from "../models/Status";
+
 export default {
     data() {
         return {
-            seguidores: []
+            statuses: []
         }
     },
     name: "Home",
     created() {
         // busca dados por requisição assíncrona
-        axios
-            .get('https://api.github.com/users/cecez/followers')
-            .then(({data}) => this.seguidores = data) // equivale a .then((response => this.seguidores = response.data)
+        Status
+            .all()
+            .then(({data}) => this.statuses = data) // equivale a .then((response => this.statuses = response.data)
 
+    },
+    methods: {
+        postedOn(status) {
+            return moment(status.created_at).fromNow();
+        }
     }
 }
 </script>

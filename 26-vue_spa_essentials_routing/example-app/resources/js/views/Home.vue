@@ -2,6 +2,8 @@
     <div class="container">
         <div class="columns">
             <div class="column">
+                <add-to-stream></add-to-stream>
+
                 <div class="message" v-for="status in statuses">
                     <div class="message-header">
                         <p>{{ status.user.name }} disse ...</p>
@@ -15,10 +17,13 @@
 </template>
 
 <script>
+import AddToStream from "../components/AddToStream";
 import moment from 'moment';
 import Status from "../models/Status";
 
 export default {
+    components: { AddToStream },
+
     data() {
         return {
             statuses: []

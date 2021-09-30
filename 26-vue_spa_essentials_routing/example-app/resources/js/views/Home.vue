@@ -2,7 +2,7 @@
     <div class="container">
         <div class="columns">
             <div class="column">
-                <add-to-stream></add-to-stream>
+                <add-to-stream @completed="addStatus"></add-to-stream>
 
                 <div class="message" v-for="status in statuses">
                     <div class="message-header">
@@ -41,6 +41,16 @@ export default {
     filters: {
         ago(date) {
             return moment(date).fromNow();
+        }
+    },
+
+    methods: {
+        addStatus(status) {
+            this.statuses.unshift(status);
+
+            alert('Status adicionado');
+
+            window.scrollTo(0, 0);
         }
     }
 }

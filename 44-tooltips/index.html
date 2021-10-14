@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Tooltips</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <!-- Development -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+</head>
+<body>
+
+<div id="root">
+    <h2>Tooltip option #1 - data attributes</h2>
+
+    Isso é um texto normal, mas que tem um tooltip <span data-tooltip="Sim, isso é um tooltip ❤️" data-tooltip-placement="bottom">aqui</span>.
+
+    Aqui temos <span data-tooltip="Segundo tooltip.">outro tooltip</span>.
+
+    <h2>Tooltip option #2 - Vue directive</h2>
+
+    Tooltip com diretiva Vue <span v-tooltip:bottom="'Terceiro tooltip.'">bem aqui</span>.
+
+    <h2>Tooltip option #3 - Vue component</h2>
+
+    Tooltip com componente <span data-tooltip-name="nossos-servicos">Vue</span>.
+
+    <tooltip name="nossos-servicos" placement="bottom">
+        <h3>Nossos</h3>
+        <p>serviços são ótimos.</p>
+    </tooltip>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,3 +1,18 @@
+// Wrapper para emitir e ouvir eventos "globais"
+window.EventDispatcher = new class {
+    constructor() {
+        this.vue = new Vue();
+    }
+
+    fire(event, data = null) {
+        this.vue.$emit(event, data);
+    }
+
+    listen(event, callback) {
+        this.vue.$on(event, callback);
+    }
+};
+
 conjuntoDeJogadores = [];
 
 Vue.component('jogador', {
@@ -31,13 +46,23 @@ Vue.component('jogador', {
             general: 0
         }
     },
+    methods: {
+        removeJogador(indice) {
+            EventDispatcher.fire('removerJogador', indice);
+        }
+    },
+    props: ['nome', 'indice'],
     template: `
         <div>
             <div class="table w-full">
                 <div class="table-row-group">
                     <div class="table-row">
                         <div class="table-cell bg-gray-400 text-gray-700 px-4 py-2 text-sm">
+                          <div class="flex">
                             <slot></slot>
+                            <div><button @click="removeJogador(indice)">Remover</button></div>
+                          </div>
+                          
                         </div>
                     </div>
                     <div class="table-row">
@@ -156,10 +181,21 @@ Vue.component('jogador', {
 Vue.component('jogadores', {
     template: `
       <div class="flex">
-        <jogador v-for="(jogador, index) in this.jogadores" :key="index">
+        <jogador 
+            v-for="(jogador, index) in this.jogadores" 
+            :key="index"
+            :nome="jogador.nome"
+            :indice="index"
+        >
           {{ jogador.nome }}
         </jogador>
       </div>`,
+
+    created() {
+        EventDispatcher.listen('removerJogador', function (indice) {
+            conjuntoDeJogadores.splice(indice, 1);
+        });
+    },
 
     data() {
         return {

@@ -15,6 +15,25 @@ window.EventDispatcher = new class {
 
 conjuntoDeJogadores = [];
 
+Vue.component('jogada', {
+    data() {
+        return {
+            pontos: 0
+        }
+    },
+    props: ['titulo', 'min', 'max', 'step', 'valor'],
+    template: `
+      <div class="table-row">
+          <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
+                <div class="flex">
+                  <div class="w-1/2">{{ titulo }}</div>
+                  <div><input class="min-w-full" type="number" v-model="pontos" :min="min" :max="max" :step="step"></div>
+                </div>
+          </div>
+      </div>
+    `
+});
+
 Vue.component('jogador', {
     computed: {
         total() {
@@ -65,6 +84,9 @@ Vue.component('jogador', {
                           
                         </div>
                     </div>
+                   
+                    <jogada titulo="Um" min="0" max="6" step="1" :valor="um"></jogada>
+                    
                     <div class="table-row">
                         <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
                             <div class="flex">

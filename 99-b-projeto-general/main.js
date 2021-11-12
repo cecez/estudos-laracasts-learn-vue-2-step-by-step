@@ -16,18 +16,16 @@ window.EventDispatcher = new class {
 conjuntoDeJogadores = [];
 
 Vue.component('jogada', {
-    data() {
-        return {
-            pontos: 0
-        }
-    },
-    props: ['titulo', 'min', 'max', 'step', 'valor'],
+    props: ['titulo', 'max', 'step', 'pontos'],
     template: `
       <div class="table-row">
           <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
                 <div class="flex">
                   <div class="w-1/2">{{ titulo }}</div>
-                  <div><input class="min-w-full" type="number" v-model="pontos" :min="min" :max="max" :step="step"></div>
+                  <div><input
+                      @input="$emit('update:pontos', $event.target.value)"
+                      :value="pontos"
+                      class="min-w-full" type="number" min="0" :max="max" :step="step"></div>
                 </div>
           </div>
       </div>
@@ -37,21 +35,15 @@ Vue.component('jogada', {
 Vue.component('jogador', {
     computed: {
         total() {
-            return parseInt(this.um) +
-                parseInt(this.dois) +
-                parseInt(this.tres) +
-                parseInt(this.quatro) +
-                parseInt(this.cinco) +
-                parseInt(this.seis) +
-                parseInt(this.trinca) +
-                parseInt(this.quadra) +
-                parseInt(this.full_house) +
-                parseInt(this.sequencia) +
-                parseInt(this.general);
+            return this.jogadas.reduce((ac, atual) => parseInt(ac.pontos) + parseInt(atual.pontos));
         }
     },
     data() {
         return {
+            jogadas: [
+                { titulo: 'Um', pontos: 0, max: 6, step: 1 },
+                { titulo: 'Dois', pontos: 0, max: 10, step: 2 },
+            ],
             um: 0,
             dois: 0,
             tres: 0,
@@ -81,29 +73,19 @@ Vue.component('jogador', {
                             <slot></slot>
                             <div><button @click="removeJogador(indice)">Remover</button></div>
                           </div>
-                          
-                        </div>
-                    </div>
-                   
-                    <jogada titulo="Um" min="0" max="6" step="1" :valor="um"></jogada>
-                    
-                    <div class="table-row">
-                        <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
-                            <div class="flex">
-                                <div class="w-1/2">Um</div>
-                                <div><input class="min-w-full" type="number" v-model="um" min="0" max="6" step="1"></div>
-                            </div>
                         </div>
                     </div>
                   
-                    <div class="table-row">
-                        <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
-                            <div class="flex">
-                                <div class="w-1/2">Dois</div>
-                                <div><input class="min-w-full" type="number" v-model="dois" min="0" max="10" step="2"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <jogada
+                        v-for="(jogada, index) in this.jogadas"
+                        :key="index"
+                        :titulo="jogada.titulo"
+                        min="0"
+                        :max="jogada.max"
+                        :step="jogada.step"
+                        :pontos.sync="jogada.pontos"
+                    >
+                    </jogada>
 
                   <div class="table-row">
                     <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">

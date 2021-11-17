@@ -16,19 +16,27 @@ window.EventDispatcher = new class {
 conjuntoDeJogadores = [];
 
 Vue.component('jogada', {
+    data() {
+        return {
+            inativa: false
+        }
+    },
     props: ['titulo', 'max', 'step', 'pontos'],
     template: `
       <div class="table-row">
           <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
                 <div class="flex">
-                  <div class="w-1/3">
-                    <input type="checkbox">
+                  <div class="">
+                    <input type="checkbox" v-model="inativa">
                   </div>
-                  <div class="w-1/3">{{ titulo }}</div>
-                  <div class="w-1/3">
+                  <div class="ml-2 mr-2 w-full">
+                    <span v-bind:class="{ 'font-bold' : inativa }">{{ titulo }}</span>
+                  </div>
+                  <div class="">
                     <input
                       @input="$emit('update:pontos', $event.target.value)"
                       :value="pontos"
+                      :disabled="inativa"
                       class="min-w-full" type="number" min="0" :max="max" :step="step">
                   </div>
                 </div>

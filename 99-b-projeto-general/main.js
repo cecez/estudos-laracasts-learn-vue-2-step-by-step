@@ -48,7 +48,9 @@ Vue.component('jogada', {
 Vue.component('jogador', {
     computed: {
         total() {
-            return this.jogadas.reduce((ac, atual) => parseInt(ac) + parseInt(atual.pontos), 0);
+            somaTotal = this.jogadas.reduce((ac, atual) => parseInt(ac) + parseInt(atual.pontos), 0);
+            this.$emit('update:pontuacao', somaTotal)
+            return somaTotal;
         }
     },
     data() {
@@ -75,7 +77,7 @@ Vue.component('jogador', {
             }
         }
     },
-    props: ['nome', 'indice'],
+    props: ['nome', 'indice', 'pontuacao'],
     template: `
         <div>
             <div class="table w-full">
@@ -103,7 +105,9 @@ Vue.component('jogador', {
                         <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
                             <div class="flex">
                                 <div class="w-1/2">Total</div>
-                                <div class="w-1/2">{{ this.total }}</div>
+                                <div class="w-1/2">
+                                  {{ this.total }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,6 +125,7 @@ Vue.component('jogadores', {
             :key="index"
             :nome="jogador.nome"
             :indice="index"
+            :pontuacao.sync="jogador.pontuacao"
         >
           {{ jogador.nome }}
         </jogador>
@@ -148,7 +153,7 @@ new Vue({
         novoJogador() {
             const nome = prompt("Qual o nome do jogador?")
             if (nome !== "") {
-                conjuntoDeJogadores.push({nome: nome})
+                conjuntoDeJogadores.push({ nome: nome, pontuacao: 0 })
             }
         }
     }

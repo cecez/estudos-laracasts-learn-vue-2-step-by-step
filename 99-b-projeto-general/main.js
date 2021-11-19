@@ -13,6 +13,12 @@ window.EventDispatcher = new class {
     }
 };
 
+function comparaPontuacaoDosJogadores(a, b) {
+    if (a.pontuacao < b.pontuacao) { return 1; }
+    if (a.pontuacao > b.pontuacao ) { return -1; }
+    return 0;
+}
+
 conjuntoDeJogadores = [];
 
 Vue.component('jogada', {
@@ -77,7 +83,7 @@ Vue.component('jogador', {
             }
         }
     },
-    props: ['nome', 'indice', 'pontuacao'],
+    props: ['nome', 'indice', 'pontuacao', 'colocacao'],
     template: `
         <div>
             <div class="table w-full">
@@ -111,6 +117,19 @@ Vue.component('jogador', {
                             </div>
                         </div>
                     </div>
+
+                      <div class="table-row">
+                        <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
+                          <div class="flex">
+                            <div class="w-1/2">Colocação</div>
+                            <div class="w-1/2">
+                              {{ this.colocacao }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  
+                    
                 </div>
             </div>
         </div>
@@ -121,10 +140,11 @@ Vue.component('jogadores', {
     template: `
       <div class="flex">
         <jogador 
-            v-for="(jogador, index) in this.jogadores" 
-            :key="index"
+            v-for="(jogador, indice) in this.jogadores" 
+            :colocacao="colocacaoDoJogador(jogador.identificador)"
+            :key="indice"
             :nome="jogador.nome"
-            :indice="index"
+            :indice="indice"
             :pontuacao.sync="jogador.pontuacao"
         >
           {{ jogador.nome }}
@@ -139,7 +159,19 @@ Vue.component('jogadores', {
 
     data() {
         return {
-            jogadores: conjuntoDeJogadores
+            jogadores: conjuntoDeJogadores,
+        }
+    },
+
+    methods: {
+        colocacaoDoJogador(identificador) {
+            // ordena array de objetos pela pontuacao
+            // todo, tentar com uma computed property este passo
+            temp = [...this.jogadores];
+            let jogadoresOrdenados = temp.sort(comparaPontuacaoDosJogadores);
+
+            // busca colocação pelo identificador
+            return jogadoresOrdenados.findIndex(x => x.identificador === identificador) + 1;
         }
     }
 });
@@ -147,13 +179,18 @@ Vue.component('jogadores', {
 
 
 new Vue({
-    data: {  },
+    data() {
+        return {
+            indiceJogadores: 0
+        }
+    },
     el: '#root',
     methods: {
         novoJogador() {
             const nome = prompt("Qual o nome do jogador?")
             if (nome !== "") {
-                conjuntoDeJogadores.push({ nome: nome, pontuacao: 0 })
+                this.indiceJogadores++;
+                conjuntoDeJogadores.push({ nome: nome, pontuacao: 0, identificador: this.indiceJogadores })
             }
         }
     }

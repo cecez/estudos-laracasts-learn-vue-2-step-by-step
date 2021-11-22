@@ -29,8 +29,9 @@ Vue.component('jogada', {
     },
     props: ['titulo', 'max', 'step', 'pontos'],
     template: `
-      <div class="table-row">
-          <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
+      <slot></slot>
+<!--      <div class="table-row">-->
+<!--          <div class="table-cell px-4 py-2 text-sm">-->
                 <div class="flex">
                   <div class="">
                     <input type="checkbox" v-model="inativa">
@@ -57,6 +58,26 @@ Vue.component('jogador', {
             somaTotal = this.jogadas.reduce((ac, atual) => parseInt(ac) + parseInt(atual.pontos), 0);
             this.$emit('update:pontuacao', somaTotal)
             return somaTotal;
+        },
+        classeHeader() {
+            if (this.colocacao === 1) {
+                return 'bg-yellow-300';
+            } else if (this.colocacao === 2) {
+                return 'bg-gray-300'
+            } else if (this.colocacao === 3) {
+                return 'bg-orange-600';
+            }
+            return '';
+        },
+        classeBody() {
+            if (this.colocacao === 1) {
+                return 'bg-yellow-200';
+            } else if (this.colocacao === 2) {
+                return 'bg-gray-200'
+            } else if (this.colocacao === 3) {
+                return 'bg-orange-500';
+            }
+            return '';
         }
     },
     data() {
@@ -89,7 +110,10 @@ Vue.component('jogador', {
             <div class="table w-full">
                 <div class="table-row-group">
                     <div class="table-row">
-                        <div class="table-cell bg-gray-400 text-gray-700 px-4 py-2 text-sm">
+                        <div
+                            v-bind:class="this.classeHeader"
+                            class="table-cell px-4 py-2 text-sm"
+                        >
                           <div class="flex">
                             <slot></slot>
                             <div><button @click="removeJogador(indice)">Remover</button></div>
@@ -105,10 +129,15 @@ Vue.component('jogador', {
                         :step="jogada.step"
                         :pontos.sync="jogada.pontos"
                     >
+                        <div class="table-row">
+                          <div v-bind:class="this.classeBody" class="table-cell px-4 py-2 text-sm">
                     </jogada>
                   
                     <div class="table-row">
-                        <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
+                        <div
+                            v-bind:class="this.classeHeader"
+                            class="table-cell px-4 py-2 text-sm"
+                        >
                             <div class="flex">
                                 <div class="w-1/2">Total</div>
                                 <div class="w-1/2">
@@ -119,7 +148,10 @@ Vue.component('jogador', {
                     </div>
 
                       <div class="table-row">
-                        <div class="table-cell bg-gray-200 text-gray-700 px-4 py-2 text-sm">
+                        <div
+                            v-bind:class="this.classeHeader"
+                            class="table-cell  px-4 py-2 text-sm"
+                        >
                           <div class="flex">
                             <div class="w-1/2">Colocação</div>
                             <div class="w-1/2">
@@ -151,6 +183,13 @@ Vue.component('jogadores', {
         </jogador>
       </div>`,
 
+    computed: {
+        jogadoresOrdenadosPorPontuacao() {
+            // ordena array de objetos pela pontuacao
+            return [...this.jogadores].sort(comparaPontuacaoDosJogadores);
+        }
+    },
+
     created() {
         EventDispatcher.listen('removerJogador', function (indice) {
             conjuntoDeJogadores.splice(indice, 1);
@@ -165,13 +204,8 @@ Vue.component('jogadores', {
 
     methods: {
         colocacaoDoJogador(identificador) {
-            // ordena array de objetos pela pontuacao
-            // todo, tentar com uma computed property este passo
-            temp = [...this.jogadores];
-            let jogadoresOrdenados = temp.sort(comparaPontuacaoDosJogadores);
-
             // busca colocação pelo identificador
-            return jogadoresOrdenados.findIndex(x => x.identificador === identificador) + 1;
+            return this.jogadoresOrdenadosPorPontuacao.findIndex(x => x.identificador === identificador) + 1;
         }
     }
 });

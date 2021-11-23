@@ -29,9 +29,6 @@ Vue.component('jogada', {
     },
     props: ['titulo', 'max', 'step', 'pontos'],
     template: `
-      <slot></slot>
-<!--      <div class="table-row">-->
-<!--          <div class="table-cell px-4 py-2 text-sm">-->
                 <div class="flex">
                   <div class="">
                     <input type="checkbox" v-model="inativa">
@@ -47,8 +44,6 @@ Vue.component('jogada', {
                       class="min-w-full" type="number" min="0" :max="max" :step="step">
                   </div>
                 </div>
-          </div>
-      </div>
     `
 });
 
@@ -67,7 +62,7 @@ Vue.component('jogador', {
             } else if (this.colocacao === 3) {
                 return 'bg-orange-600';
             }
-            return '';
+            return 'bg-green-300';
         },
         classeBody() {
             if (this.colocacao === 1) {
@@ -77,7 +72,7 @@ Vue.component('jogador', {
             } else if (this.colocacao === 3) {
                 return 'bg-orange-500';
             }
-            return '';
+            return 'bg-green-200';
         }
     },
     data() {
@@ -114,33 +109,43 @@ Vue.component('jogador', {
                             v-bind:class="this.classeHeader"
                             class="table-cell px-4 py-2 text-sm"
                         >
-                          <div class="flex">
+                          <div class="flex justify-between">
                             <slot></slot>
-                            <div><button @click="removeJogador(indice)">Remover</button></div>
+                            <div><button 
+                                class="bg-white ml-2 p-1 rounded text-black"
+                                @click="removeJogador(indice)"
+                            >Remover</button></div>
                           </div>
                         </div>
                     </div>
-                  
-                    <jogada
+
+                    <div 
                         v-for="(jogada, index) in this.jogadas"
-                        :key="index"
-                        :titulo="jogada.titulo"
-                        :max="jogada.max"
-                        :step="jogada.step"
-                        :pontos.sync="jogada.pontos"
+                        :class="classeBody"
+                        class="table-row"
                     >
-                        <div class="table-row">
-                          <div v-bind:class="this.classeBody" class="table-cell px-4 py-2 text-sm">
-                    </jogada>
+                        <div class="table-cell px-4 py-2 text-sm">
+                          <jogada
+                              :key="index"
+                              :titulo="jogada.titulo"
+                              :max="jogada.max"
+                              :step="jogada.step"
+                              :pontos.sync="jogada.pontos"
+                          >
+                          </jogada>  
+                        </div>
+                    </div>
+                  
+                    
                   
                     <div class="table-row">
                         <div
                             v-bind:class="this.classeHeader"
                             class="table-cell px-4 py-2 text-sm"
                         >
-                            <div class="flex">
-                                <div class="w-1/2">Total</div>
-                                <div class="w-1/2">
+                            <div class="flex justify-between">
+                                <div>Total</div>
+                                <div>
                                   {{ this.total }}
                                 </div>
                             </div>
@@ -152,9 +157,9 @@ Vue.component('jogador', {
                             v-bind:class="this.classeHeader"
                             class="table-cell  px-4 py-2 text-sm"
                         >
-                          <div class="flex">
-                            <div class="w-1/2">Colocação</div>
-                            <div class="w-1/2">
+                          <div class="flex justify-between">
+                            <div>Colocação</div>
+                            <div>
                               {{ this.colocacao }}
                             </div>
                           </div>
